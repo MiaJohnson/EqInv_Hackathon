@@ -1,0 +1,1 @@
+C:\Users\miajo\source\repos\CrossPlatform\EqInv\EqInv\EqInv.csproj;x64

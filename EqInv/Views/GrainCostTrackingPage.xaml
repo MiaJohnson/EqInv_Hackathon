@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:EqInv.ViewModels"
+             xmlns:m="clr-namespace:EqInv.Models"
+             x:DataType="vm:GrainCostTrackingViewModel"
+             x:Class="EqInv.Views.GrainCostTrackingPage"
+             Title="Grain Cost Tracking">
+  <!--<ContentPage.Resources>
+    <Style TargetType="Label">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontSize" Value="11" />
+    </Style>
+  
+    <Style TargetType="VerticalStackLayout">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="10,0,0,10" />
+    </Style>
+  </ContentPage.Resources>-->
+
+  <StackLayout>
+
+    <FlexLayout Direction="Row" Wrap="Wrap">
+      <HorizontalStackLayout>
+        <Button Text="Add Inventory" 
+             Command="{Binding AddNewGrainModelCommand}" 
+             WidthRequest="150" 
+             HeightRequest="40" 
+             BackgroundColor="{StaticResource Primary}"
+             TextColor="{StaticResource Secondary}"
+             HorizontalOptions="Start" />
+        <VerticalStackLayout>
+          <HorizontalStackLayout>
+            <Label Text="Total Cost: " FontAttributes="Bold"/>
+            <Label Text="{Binding SummedCosts}"  />
+          </HorizontalStackLayout>
+          <HorizontalStackLayout>
+            <Label Text="Total Qty:  " FontAttributes="Bold" />
+            <Label Text="{Binding SummedQuantities}"/>
+          </HorizontalStackLayout>
+        </VerticalStackLayout>
+      </HorizontalStackLayout>
+
+      <HorizontalStackLayout>
+        <SearchBar x:Name="searchBar" Placeholder="Filter">
+          <SearchBar.Behaviors>
+            <toolkit:EventToCommandBehavior EventName="TextChanged" 
+                                       Command="{Binding FilterResultsCommand}" 
+                                       CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+          </SearchBar.Behaviors>
+        </SearchBar>
+      </HorizontalStackLayout>
+    </FlexLayout>
+
+
+
+    <!--<RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}" Padding="0">
+      <FlexLayout Direction="Row" Wrap="Wrap" >
+        <Label Text="{Binding }"
+      </FlexLayout>
+    </RefreshView>-->
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}"  Margin="10,10,10,0">
+
+      <CollectionView ItemsSource="{Binding GrainItems}" 
+         SelectionMode="Single"
+          SelectedItem="{Binding SelectedGrainModel}"
+          SelectionChangedCommand="{Binding SelectionChangedCommand}"
+          VerticalScrollBarVisibility="Always">
+        <CollectionView.ItemsLayout>
+          <GridItemsLayout Orientation="Vertical" Span="2" />
+        </CollectionView.ItemsLayout>
+
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="m:GrainModel">
+              <HorizontalStackLayout IsVisible="true">
+                <Button Text="-"
+                 BackgroundColor="{StaticResource Primary}"
+                 CornerRadius="90"
+                 HorizontalOptions="Center"
+                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GrainCostTrackingViewModel}}, Path=DeleteGrainCommand}" 
+                 CommandParameter="{Binding .}"
+                 />
+              <FlexLayout Direction="Row" Wrap="Wrap" Margin="5, 0, 0, 0">
+                <Label Text="{Binding Manufacturer}" TextColor="Black" />
+                <Label Text="{Binding ProductName}" TextColor="Black" />
+                <Label Text="{Binding PurchaseDate, StringFormat='{0:MM/dd/yyyy}'}" Margin="2,0,0,0"  />
+              </FlexLayout>
+            </HorizontalStackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+        <CollectionView.EmptyView>
+          <ContentView>
+            <StackLayout HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand">
+              <Label Text="No results returned."                
+                 FontAttributes="Bold"
+                 FontSize="18"
+                 HorizontalOptions="Fill"
+                 HorizontalTextAlignment="Center" />
+              <Label Text="Try a broader filter?"
+                 FontAttributes="Italic"
+                 FontSize="12"
+                 HorizontalOptions="Fill"
+                 HorizontalTextAlignment="Center" />
+            </StackLayout>
+          </ContentView>
+        </CollectionView.EmptyView>
+      </CollectionView>
+
+    </RefreshView>
+    
+  </StackLayout>
+
+</ContentPage>

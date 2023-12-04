@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:EqInv.ViewModels"
+             xmlns:m="clr-namespace:EqInv.Models"
+             x:DataType="vm:GrainCostTrackingDetailViewModel"
+             x:Class="EqInv.Views.GrainCostTrackingDetailPage"
+             Title="Grain Cost Tracking Detail">
+  
+  <ContentPage.Resources>
+    <Style TargetType="Label">
+      <Setter Property="Padding" Value="2" />
+      <Setter Property="HorizontalOptions" Value="Fill" />
+      <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+    <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+      <Setter Property="TextColor" Value="Red" />
+    </Style>
+    <Style x:Key="ValidEntryStyle" TargetType="Entry">
+      <Setter Property="TextColor" Value="Green" />
+    </Style>
+  </ContentPage.Resources>
+
+  <Grid>
+
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}">
+
+      <ScrollView>
+        <FlexLayout Wrap="NoWrap" Padding="5,5,5,5"  Direction="Column">
+
+          <StackLayout>
+            <Label Text="Manufacturer" FontAttributes="Bold" />
+            <Entry Text="{Binding GrainItem.Manufacturer}" Placeholder="Manufacturer. i.e. Tribute, Purina, etc">
+              <Entry.Behaviors>
+                <toolkit:TextValidationBehavior 
+                 InvalidStyle="{StaticResource InvalidEntryStyle}"
+                 ValidStyle="{StaticResource ValidEntryStyle}"
+                 Flags="ValidateOnValueChanged"
+                 MinimumLength="1"
+                 MaximumLength="250" />
+              </Entry.Behaviors>
+            </Entry>
+          </StackLayout>
+
+
+          <Label Text="Product Name" FontAttributes="Bold" />
+          <Entry Text="{Binding GrainItem.ProductName}" Placeholder="Product. i.e. Essential K, Senior, etc.">
+            <Entry.Behaviors>
+              <toolkit:TextValidationBehavior 
+                 InvalidStyle="{StaticResource InvalidEntryStyle}"
+                 ValidStyle="{StaticResource ValidEntryStyle}"
+                 Flags="ValidateOnValueChanged"
+                 MinimumLength="1"
+                 MaximumLength="250" />
+            </Entry.Behaviors>
+          </Entry>
+
+
+          <Label Grid.Row="0"  Text="Quantity" FontAttributes="Bold" />
+          <Entry Grid.Row="0" Grid.Column="3" Text="{Binding GrainItem.Quantity, StringFormat='{0:N0}'}" Placeholder="Number of bags">
+            <Entry.Behaviors>
+              <toolkit:NumericValidationBehavior  
+             InvalidStyle="{StaticResource InvalidEntryStyle}"
+             ValidStyle="{StaticResource ValidEntryStyle}"
+             Flags="ValidateOnValueChanged"
+             MinimumValue="0"
+             MaximumValue="9999"
+             MaximumDecimalPlaces="0" />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Label Text="Price Per Item" FontAttributes="Bold" />
+          <Entry Grid.Column="3" Text="{Binding GrainItem.PricePerItem, StringFormat='{0:N2}'}" Placeholder="numeric value of price per bag">
+            <Entry.Behaviors>
+              <toolkit:NumericValidationBehavior  
+                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                ValidStyle="{StaticResource ValidEntryStyle}"
+                Flags="ValidateOnValueChanged"
+                MinimumValue="0"
+                MaximumValue="999.99"
+                MaximumDecimalPlaces="2" />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Label Text="Weight Per Item" FontAttributes="Bold" />
+          <Entry Text="{Binding GrainItem.WeightPerItem, StringFormat='{0:N2}'}" Placeholder="Weight per bag of grain" >
+            <Entry.Behaviors>
+              <toolkit:NumericValidationBehavior  
+                 InvalidStyle="{StaticResource InvalidEntryStyle}"
+                 ValidStyle="{StaticResource ValidEntryStyle}"
+                 Flags="ValidateOnValueChanged"
+                 MinimumValue="0"
+                 MaximumValue="999.99"
+                 MaximumDecimalPlaces="2" />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Label Text="Delivery Cost" FontAttributes="Bold" />
+          <Entry Grid.Column="3" Text="{Binding GrainItem.DeliveryCost, StringFormat='{0:N2}'}" Placeholder="Delivery Costs">
+            <Entry.Behaviors>
+              <toolkit:NumericValidationBehavior  
+                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                ValidStyle="{StaticResource ValidEntryStyle}"
+                Flags="ValidateOnValueChanged"
+                MinimumValue="0"
+                MaximumValue="9999.99"
+                MaximumDecimalPlaces="2" />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Label Text="Purchase Date" FontAttributes="Bold" />
+          <Entry Text="{Binding GrainItem.PurchaseDate, StringFormat='{0:MM/dd/yyyy}'}" Placeholder="mm/dd/yyyy">
+            <Entry.Behaviors>
+              <toolkit:TextValidationBehavior 
+                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                ValidStyle="{StaticResource ValidEntryStyle}"
+                Flags="ValidateOnValueChanged"
+                RegexPattern="^[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]*$"
+                />
+            </Entry.Behaviors>
+          </Entry>
+
+          <Label Text="Taxes" FontAttributes="Bold" />
+          <Entry Grid.Column="3" Text="{Binding GrainItem.TaxAmount, StringFormat='{0:N2}'}" Placeholder="Tax Amount">
+            <Entry.Behaviors>
+              <toolkit:NumericValidationBehavior  
+                InvalidStyle="{StaticResource InvalidEntryStyle}"
+                ValidStyle="{StaticResource ValidEntryStyle}"
+                Flags="ValidateOnValueChanged"
+                MinimumValue="0"
+                MaximumValue="9999.99"
+                MaximumDecimalPlaces="2" />
+            </Entry.Behaviors>
+          </Entry>
+
+
+          <Label Text="Note" FontAttributes="Bold" />
+          <Entry Text="{Binding GrainItem.Note}" >
+            <Entry.Behaviors>
+              <toolkit:TextValidationBehavior 
+               InvalidStyle="{StaticResource InvalidEntryStyle}"
+               ValidStyle="{StaticResource ValidEntryStyle}"
+               Flags="ValidateOnValueChanged"
+               MinimumLength="1"
+               MaximumLength="250" />
+            </Entry.Behaviors>
+          </Entry>
+          <HorizontalStackLayout>
+            <Label Text="Total Weight:" FontAttributes="Bold" />
+            <Label Text="{Binding GrainItem.TotalWeight, StringFormat='{0:N2}'}" Padding="5,0,5,0" />
+            <Label Text="Total Price:" FontAttributes="Bold"  />
+            <Label Text="{Binding GrainItem.TotalPrice, StringFormat='{0:C2}'}" Padding="5,0,5,0" />
+          </HorizontalStackLayout>
+          <Button Text="Save" Command="{Binding AddOrUpdateGrainCommand}" CommandParameter="{Binding GrainItem}"  />
+
+
+        </FlexLayout>
+
+      </ScrollView>
+    </RefreshView>
+
+  </Grid>
+
+
+</ContentPage>
